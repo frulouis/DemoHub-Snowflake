@@ -130,66 +130,7 @@ COMMENT ON COLUMN Opportunities.LeadSource IS 'How the lead was initially acquir
 COMMENT ON COLUMN Opportunities.SalesStage IS 'The current stage of the opportunity in the sales pipeline.';
 
 
-
--- -- 5. Tags Creation and Application:
--- -- Define tags for PII, lead source, and sales stage and apply them to relevant columns.
-
--- create tag cost_center
---     allowed_values 'finance', 'engineering';
-
--- -- Create Tag for Personally Identifiable Information (PII)
--- CREATE TAG PII ALLOWED_VALUES 'Name', 'Email', 'Address' COMMENT = 'Indicates personally identifiable information';
-
--- -- Create Tag for Lead Source
--- CREATE TAG Lead_Source ALLOWED_VALUES ('Partner Referral', 'Web Form', 'Outbound Call', 'Trade Show') COMMENT = 'Indicates the source of the lead or opportunity';
-
--- -- Create Tag for Sales Stage
--- CREATE TAG Sales_Stage ALLOWED_VALUES ('Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost') COMMENT = 'Indicates the current stage of the sales opportunity';
-
--- -- Apply Tags to Tables and Columns
-
--- -- Customer Table
--- ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN FirstName;
--- ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN LastName;
--- ALTER TABLE Customer SET TAG PII = 'Email' FOR COLUMN Email;
-
--- -- Buyer Table
--- ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN FirstName;
--- ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN LastName;
--- ALTER TABLE Buyer SET TAG PII = 'Email' FOR COLUMN Email;
--- ALTER TABLE Buyer SET TAG PII = 'Address' FOR COLUMN Address;
-
--- -- Client Table
--- ALTER TABLE Client SET TAG PII = 'Address' FOR COLUMN Address;
-
--- -- Opportunities Table
--- ALTER TABLE Opportunities SET TAG Lead_Source = LeadSource; -- Apply the tag with the same name as the column
--- ALTER TABLE Opportunities SET TAG Sales_Stage = SalesStage; -- Apply the tag with the same name as the column
-
-
--- 6. RBAC Privileges Setup:
--- Define roles and grant privileges for role-based access control.
-
--- Use a role with sufficient privileges
-USE ROLE ACCOUNTADMIN;
-
--- Create Roles
-CREATE OR REPLACE ROLE SalesRep;
-CREATE OR REPLACE ROLE SalesManager;
-
--- Grant Usage on Database to Roles
-GRANT USAGE ON DATABASE SalesDB TO ROLE SalesRep;
-GRANT USAGE ON DATABASE SalesDB TO ROLE SalesManager;
-
--- Grant Usage on Schema to Roles
-GRANT USAGE ON SCHEMA SalesDB.custs TO ROLE SalesRep;
-GRANT USAGE ON SCHEMA SalesDB.custs TO ROLE SalesManager;
-
--- Grant Select on Tables to Roles
-GRANT SELECT ON TABLE Customer TO ROLE SalesRep;
-GRANT SELECT ON ALL TABLES IN SCHEMA custs TO ROLE SalesManager; -- More access
-
--- 7. Functions, Stored Procedures, and Views Creation:
+-- 5. Functions, Stored Procedures, and Views Creation:
 -- Define functions, stored procedures, and views for analysis purposes.
 
 -- Function to calculate the total value of closed opportunities for a given customer
@@ -260,8 +201,69 @@ WHERE SalesStage IN ('Negotiation', 'Proposal')
 AND ExpectedCloseDate BETWEEN CURRENT_DATE AND DATEADD(month, 1, CURRENT_DATE);
 
 
+-- -- 6. Tags Creation and Application:
+-- -- Define tags for PII, lead source, and sales stage and apply them to relevant columns.
+
+-- create tag cost_center
+--     allowed_values 'finance', 'engineering';
+
+-- -- Create Tag for Personally Identifiable Information (PII)
+-- CREATE TAG PII ALLOWED_VALUES 'Name', 'Email', 'Address' COMMENT = 'Indicates personally identifiable information';
+
+-- -- Create Tag for Lead Source
+-- CREATE TAG Lead_Source ALLOWED_VALUES ('Partner Referral', 'Web Form', 'Outbound Call', 'Trade Show') COMMENT = 'Indicates the source of the lead or opportunity';
+
+-- -- Create Tag for Sales Stage
+-- CREATE TAG Sales_Stage ALLOWED_VALUES ('Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost') COMMENT = 'Indicates the current stage of the sales opportunity';
+
+-- -- Apply Tags to Tables and Columns
+
+-- -- Customer Table
+-- ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN FirstName;
+-- ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN LastName;
+-- ALTER TABLE Customer SET TAG PII = 'Email' FOR COLUMN Email;
+
+-- -- Buyer Table
+-- ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN FirstName;
+-- ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN LastName;
+-- ALTER TABLE Buyer SET TAG PII = 'Email' FOR COLUMN Email;
+-- ALTER TABLE Buyer SET TAG PII = 'Address' FOR COLUMN Address;
+
+-- -- Client Table
+-- ALTER TABLE Client SET TAG PII = 'Address' FOR COLUMN Address;
+
+-- -- Opportunities Table
+-- ALTER TABLE Opportunities SET TAG Lead_Source = LeadSource; -- Apply the tag with the same name as the column
+-- ALTER TABLE Opportunities SET TAG Sales_Stage = SalesStage; -- Apply the tag with the same name as the column
+
+
+
+-- 7. RBAC Privileges Setup:
+-- Define roles and grant privileges for role-based access control.
+
+-- Use a role with sufficient privileges
+USE ROLE ACCOUNTADMIN;
+
+-- Create Roles
+CREATE OR REPLACE ROLE SalesRep;
+CREATE OR REPLACE ROLE SalesManager;
+
+-- Grant Usage on Database to Roles
+GRANT USAGE ON DATABASE SalesDB TO ROLE SalesRep;
+GRANT USAGE ON DATABASE SalesDB TO ROLE SalesManager;
+
+-- Grant Usage on Schema to Roles
+GRANT USAGE ON SCHEMA SalesDB.custs TO ROLE SalesRep;
+GRANT USAGE ON SCHEMA SalesDB.custs TO ROLE SalesManager;
+
+-- Grant Select on Tables to Roles
+GRANT SELECT ON TABLE Customer TO ROLE SalesRep;
+GRANT SELECT ON ALL TABLES IN SCHEMA custs TO ROLE SalesManager; -- More access
+
+
 -- 8. Switch to the ACCOUNTADMIN role (or a role with user management privileges)
--- When Demo'ing or testing this; switch to the user called DEMO. Make sure to switch the role from default to SALESREP. Perform Search with universal search
+-- When Demo'ing or testing this; switch to the user called DEMO. 
+-- Make sure to switch the role from default to SALESREP. Perform Search with universal search
 USE ROLE ACCOUNTADMIN;
 
 -- Grant the SalesRep role to the Demo user
