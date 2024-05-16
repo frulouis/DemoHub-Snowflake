@@ -1,3 +1,4 @@
+
 /*
 ------------------------------------------------------------------------------
 -- Snowflake Demo Script: Sales Data Model and Universal Search Exploration
@@ -37,7 +38,7 @@ CREATE OR REPLACE SCHEMA Custs;
 -- Create tables for storing customer, buyer, client, and opportunity data.
 
 -- Customer Table
-CREATE TABLE Customer (
+CREATE OR REPLACE TABLE Customer (
     CustomerID INT PRIMARY KEY,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
@@ -47,7 +48,7 @@ CREATE TABLE Customer (
 );
 
 -- Buyer Table
-CREATE TABLE Buyer (
+CREATE OR REPLACE TABLE Buyer (
     BuyerID INT PRIMARY KEY,
     CustomerID INT REFERENCES Customer(CustomerID),
     FirstName VARCHAR(50),
@@ -58,7 +59,7 @@ CREATE TABLE Buyer (
 );
 
 -- Client Table
-CREATE TABLE Client (
+CREATE OR REPLACE TABLE Client (
     ClientID INT PRIMARY KEY,
     BuyerID INT REFERENCES Buyer(BuyerID),
     ContractStartDate DATE,
@@ -66,7 +67,7 @@ CREATE TABLE Client (
 );
 
 -- Opportunities Table
-CREATE TABLE Opportunities (
+CREATE OR REPLACE TABLE Opportunities (
     OpportunityID INT PRIMARY KEY,
     CustomerID INT REFERENCES Customer(CustomerID),
     BuyerID INT REFERENCES Buyer(BuyerID),
@@ -111,54 +112,60 @@ VALUES
 -- Add comments to tables and columns for better understanding.
 
 -- Customer Table Comments
-ALTER TABLE Customer COMMENT = 'Stores information about our potential and existing customers, including contact details and location.';
-ALTER TABLE Customer MODIFY COMMENT ON COLUMN HomeLocation IS 'The customer''s primary residence address.';
+COMMENT ON TABLE Customer IS 'Stores information about our potential and existing customers, including contact details and location.';
+COMMENT ON COLUMN Customer.HomeLocation IS 'The customer''s primary residence address.';
 
 -- Buyer Table Comments
-ALTER TABLE Buyer COMMENT = 'Tracks information about customers who have made a purchase, including their new address and postal code.';
-ALTER TABLE Buyer MODIFY COMMENT ON COLUMN Address IS 'The buyer''s preferred shipping or billing address.';
-ALTER TABLE Buyer MODIFY COMMENT ON COLUMN PostalCode IS 'The buyer''s postal code, which may differ from their home location zip code.';
+COMMENT ON TABLE Buyer IS 'Tracks information about customers who have made a purchase, including their new address and postal code.';
+COMMENT ON COLUMN Buyer.Address IS 'The buyer''s preferred shipping or billing address.';
+COMMENT ON COLUMN Buyer.PostalCode IS 'The buyer''s postal code, which may differ from their home location zip code.';
 
 -- Client Table Comments
-ALTER TABLE Client COMMENT = 'Stores details about customers who have signed contracts, including contract start date and value.';
-ALTER TABLE Client MODIFY COMMENT ON COLUMN ContractValue IS 'The total monetary value of the signed contract.';
+COMMENT ON TABLE Client IS 'Stores details about customers who have signed contracts, including contract start date and value.';
+COMMENT ON COLUMN Client.ContractValue IS 'The total monetary value of the signed contract.';
 
 -- Opportunities Table Comments
-ALTER TABLE Opportunities COMMENT = 'Tracks the progress of sales opportunities, including lead source, current sales stage, expected close date, and potential value.';
-ALTER TABLE Opportunities MODIFY COMMENT ON COLUMN LeadSource IS 'How the lead was initially acquired (e.g., referral, web form, cold call).';
-ALTER TABLE Opportunities MODIFY COMMENT ON COLUMN SalesStage IS 'The current stage of the opportunity in the sales pipeline.';
+COMMENT ON TABLE Opportunities IS 'Tracks the progress of sales opportunities, including lead source, current sales stage, expected close date, and potential value.';
+COMMENT ON COLUMN Opportunities.LeadSource IS 'How the lead was initially acquired (e.g., referral, web form, cold call).';
+COMMENT ON COLUMN Opportunities.SalesStage IS 'The current stage of the opportunity in the sales pipeline.';
 
--- 5. Tags Creation and Application:
--- Define tags for PII, lead source, and sales stage and apply them to relevant columns.
 
--- Create Tag for Personally Identifiable Information (PII)
-CREATE TAG PII ALLOWED_VALUES ('Name', 'Email', 'Address') COMMENT = 'Indicates personally identifiable information';
 
--- Create Tag for Lead Source
-CREATE TAG Lead_Source ALLOWED_VALUES ('Partner Referral', 'Web Form', 'Outbound Call', 'Trade Show') COMMENT = 'Indicates the source of the lead or opportunity';
+-- -- 5. Tags Creation and Application:
+-- -- Define tags for PII, lead source, and sales stage and apply them to relevant columns.
 
--- Create Tag for Sales Stage
-CREATE TAG Sales_Stage ALLOWED_VALUES ('Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost') COMMENT = 'Indicates the current stage of the sales opportunity';
+-- create tag cost_center
+--     allowed_values 'finance', 'engineering';
 
--- Apply Tags to Tables and Columns
+-- -- Create Tag for Personally Identifiable Information (PII)
+-- CREATE TAG PII ALLOWED_VALUES 'Name', 'Email', 'Address' COMMENT = 'Indicates personally identifiable information';
 
--- Customer Table
-ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN FirstName;
-ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN LastName;
-ALTER TABLE Customer SET TAG PII = 'Email' FOR COLUMN Email;
+-- -- Create Tag for Lead Source
+-- CREATE TAG Lead_Source ALLOWED_VALUES ('Partner Referral', 'Web Form', 'Outbound Call', 'Trade Show') COMMENT = 'Indicates the source of the lead or opportunity';
 
--- Buyer Table
-ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN FirstName;
-ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN LastName;
-ALTER TABLE Buyer SET TAG PII = 'Email' FOR COLUMN Email;
-ALTER TABLE Buyer SET TAG PII = 'Address' FOR COLUMN Address;
+-- -- Create Tag for Sales Stage
+-- CREATE TAG Sales_Stage ALLOWED_VALUES ('Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost') COMMENT = 'Indicates the current stage of the sales opportunity';
 
--- Client Table
-ALTER TABLE Client SET TAG PII = 'Address' FOR COLUMN Address;
+-- -- Apply Tags to Tables and Columns
 
--- Opportunities Table
-ALTER TABLE Opportunities SET TAG Lead_Source = LeadSource; -- Apply the tag with the same name as the column
-ALTER TABLE Opportunities SET TAG Sales_Stage = SalesStage; -- Apply the tag with the same name as the column
+-- -- Customer Table
+-- ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN FirstName;
+-- ALTER TABLE Customer SET TAG PII = 'Name' FOR COLUMN LastName;
+-- ALTER TABLE Customer SET TAG PII = 'Email' FOR COLUMN Email;
+
+-- -- Buyer Table
+-- ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN FirstName;
+-- ALTER TABLE Buyer SET TAG PII = 'Name' FOR COLUMN LastName;
+-- ALTER TABLE Buyer SET TAG PII = 'Email' FOR COLUMN Email;
+-- ALTER TABLE Buyer SET TAG PII = 'Address' FOR COLUMN Address;
+
+-- -- Client Table
+-- ALTER TABLE Client SET TAG PII = 'Address' FOR COLUMN Address;
+
+-- -- Opportunities Table
+-- ALTER TABLE Opportunities SET TAG Lead_Source = LeadSource; -- Apply the tag with the same name as the column
+-- ALTER TABLE Opportunities SET TAG Sales_Stage = SalesStage; -- Apply the tag with the same name as the column
+
 
 -- 6. RBAC Privileges Setup:
 -- Define roles and grant privileges for role-based access control.
@@ -167,62 +174,70 @@ ALTER TABLE Opportunities SET TAG Sales_Stage = SalesStage; -- Apply the tag wit
 USE ROLE ACCOUNTADMIN;
 
 -- Create Roles
-CREATE ROLE SalesRep;
-CREATE ROLE SalesManager;
+CREATE OR REPLACE ROLE SalesRep;
+CREATE OR REPLACE ROLE SalesManager;
 
 -- Grant Usage on Database to Roles
 GRANT USAGE ON DATABASE SalesDB TO ROLE SalesRep;
 GRANT USAGE ON DATABASE SalesDB TO ROLE SalesManager;
 
 -- Grant Usage on Schema to Roles
-GRANT USAGE ON SCHEMA SalesDB.customer TO ROLE SalesRep;
-GRANT USAGE ON SCHEMA SalesDB.customer TO ROLE SalesManager;
+GRANT USAGE ON SCHEMA SalesDB.custs TO ROLE SalesRep;
+GRANT USAGE ON SCHEMA SalesDB.custs TO ROLE SalesManager;
 
 -- Grant Select on Tables to Roles
-GRANT SELECT ON TABLE SalesDB.customer.Customer TO ROLE SalesRep;
-GRANT SELECT ON ALL TABLES IN SCHEMA SalesDB.customer TO ROLE SalesManager; -- More access
+GRANT SELECT ON TABLE Customer TO ROLE SalesRep;
+GRANT SELECT ON ALL TABLES IN SCHEMA custs TO ROLE SalesManager; -- More access
 
 -- 7. Functions, Stored Procedures, and Views Creation:
 -- Define functions, stored procedures, and views for analysis purposes.
 
 -- Function to calculate the total value of closed opportunities for a given customer
-CREATE OR REPLACE FUNCTION customer_closed_won_value (customer_id INT)
-RETURNS DECIMAL(10, 2) AS $$
+CREATE OR REPLACE FUNCTION customer_closed_won_value(customer_id INT) RETURNS NUMBER(19,4) LANGUAGE SQL
+AS
+$$
 SELECT SUM(o.Amount)
-FROM SalesDB.customer.Opportunities o
-JOIN SalesDB.customer.Customer c ON o.CustomerID = c.CustomerID
-WHERE c.CustomerID = customer_id
-AND o.SalesStage = 'Closed Won';
+FROM Opportunities o
+JOIN Customer c ON o.CustomerID = c.CustomerID
+WHERE o.CustomerID = customer_id
+AND o.SalesStage = 'Closed Won'
 $$;
 
--- Function to categorize customers based on their total value of closed opportunities
-CREATE OR REPLACE FUNCTION categorize_customer (customer_id INT)
-RETURNS VARCHAR(20) AS $$
-DECLARE 
-    total_value DECIMAL(10, 2) := customer_closed_won_value(customer_id);
-BEGIN
-    IF total_value >= 100000 THEN
-        RETURN 'High Value';
-    ELSIF total_value >= 50000 THEN
-        RETURN 'Medium Value';
-    ELSE
-        RETURN 'Low Value';
-    END IF;
-END;
-$$;
+-- -- Function to categorize customers based on their total value of closed opportunities
+-- CREATE OR REPLACE FUNCTION categorize_customer (customer_id INT)
+-- RETURNS VARCHAR(20) AS $$
+-- DECLARE 
+--     total_value DECIMAL(10, 2) := customer_closed_won_value(customer_id);
+-- BEGIN
+--     IF total_value >= 100000 THEN
+--         RETURN 'High Value';
+--     ELSIF total_value >= 50000 THEN
+--         RETURN 'Medium Value';
+--     ELSE
+--         RETURN 'Low Value';
+--     END IF;
+-- END;
+-- $$;
+
 
 -- Stored procedure to update the sales stage of an opportunity
 CREATE OR REPLACE PROCEDURE update_opportunity_stage (opportunity_id INT, new_stage VARCHAR)
+  RETURNS STRING
+  LANGUAGE SQL
 AS $$
 BEGIN
     UPDATE SalesDB.customer.Opportunities
     SET SalesStage = new_stage
     WHERE OpportunityID = opportunity_id;
+    RETURN 'Success'; -- or any message you want to return upon successful execution
 END;
 $$;
 
+
 -- Stored procedure to assign a new buyer to a customer
 CREATE OR REPLACE PROCEDURE assign_buyer_to_customer (customer_id INT, buyer_id INT)
+  RETURNS STRING
+  LANGUAGE SQL
 AS $$
 BEGIN
     UPDATE SalesDB.customer.Customer
@@ -234,12 +249,20 @@ $$;
 -- View to display high-value customers
 CREATE OR REPLACE VIEW high_value_customers AS
 SELECT c.*, customer_closed_won_value(c.CustomerID) AS TotalValue
-FROM SalesDB.customer.Customer c
-WHERE categorize_customer(c.CustomerID) = 'High Value';
+FROM Customer c;
+--WHERE categorize_customer(c.CustomerID) = 'High Value';
 
 -- View to display opportunities likely to close in the next month
 CREATE OR REPLACE VIEW opportunities_likely_to_close AS
 SELECT *
-FROM SalesDB.customer.Opportunities
+FROM Opportunities
 WHERE SalesStage IN ('Negotiation', 'Proposal')
 AND ExpectedCloseDate BETWEEN CURRENT_DATE AND DATEADD(month, 1, CURRENT_DATE);
+
+
+-- 9. Switch to the ACCOUNTADMIN role (or a role with user management privileges)
+-- When Demo'ing or testing this; switch to the user called DEMO. Make sure to switch the role from default to SALESREP. Perform Search with universal search
+USE ROLE ACCOUNTADMIN;
+
+-- Grant the SalesRep role to the Demo user
+GRANT ROLE SalesRep TO USER Demo;
