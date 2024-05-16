@@ -9,16 +9,12 @@
 -- columns for PII, lead source, and sales stage. Additionally, it defines RBAC 
 -- privileges, functions, stored procedures, and views for analysis purposes.
 --
--- Author:      
--- Fru N.
--- Website:     
--- DemoHub.dev
+-- Author: Fru N.
+-- Website: DemoHub.dev
 --
--- Date:        
--- May 15, 2024
+-- Date: May 15, 2024
 --
--- Copyright:  
--- (c) 2024 DemoHub.dev. All rights reserved.
+-- Copyright: (c) 2024 DemoHub.dev. All rights reserved.
 --
 -- Disclaimer:  
 -- This script is for educational and demonstration purposes only. It is not
