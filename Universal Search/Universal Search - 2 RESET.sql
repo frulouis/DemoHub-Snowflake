@@ -21,6 +21,10 @@ USE ROLE ACCOUNTADMIN;  -- Or a role with sufficient privileges
 -- Drop the database
 DROP DATABASE IF EXISTS SalesDB CASCADE;
 
+-- Revoke from user
+REVOKE ROLE SalesRep FROM USER Demo;
+
+
 -- Drop the roles
 DROP ROLE IF EXISTS SalesRep;
 DROP ROLE IF EXISTS SalesManager;
