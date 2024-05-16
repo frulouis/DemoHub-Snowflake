@@ -21,7 +21,7 @@ By harnessing the capabilities of Large Language Models (LLMs), Universal Search
 
 To illustrate the power of Universal Search, let's explore a scenario using the sample data model provided in the companion GitHub repository:[ **https://github.com/frulouis/DemoHub-Snowflake-Pocket-Book-SPD.git**](https://github.com/frulouis/DemoHub-Snowflake-Pocket-Book-SPD.git)
 
-![SalesDB Data Model](https://i.ibb.co/5KFCp2j/Sample-Image.jpg)
+![SalesDB Data Model](https://i.ibb.co/CvM8TCj/SalesDB.png)
 
 The provided data model includes four tables: `Customer`, `Buyer`, `Client`, and `Opportunities`. It incorporates comments and tags to enhance search capabilities and security. Additionally, functions, stored procedures, and views are provided to demonstrate how Universal Search can be used for deeper analysis.
 
