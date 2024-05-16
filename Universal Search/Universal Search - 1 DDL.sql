@@ -260,7 +260,7 @@ WHERE SalesStage IN ('Negotiation', 'Proposal')
 AND ExpectedCloseDate BETWEEN CURRENT_DATE AND DATEADD(month, 1, CURRENT_DATE);
 
 
--- 9. Switch to the ACCOUNTADMIN role (or a role with user management privileges)
+-- 8. Switch to the ACCOUNTADMIN role (or a role with user management privileges)
 -- When Demo'ing or testing this; switch to the user called DEMO. Make sure to switch the role from default to SALESREP. Perform Search with universal search
 USE ROLE ACCOUNTADMIN;
 
