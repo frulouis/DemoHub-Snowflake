@@ -56,26 +56,7 @@
    
    
    -- +----------------------------------------------------+
-   -- |       3. CONSTRAINTS AND REFERENTIAL INTEGRITY      |
-   -- +----------------------------------------------------+
-   
-   -- Device table
-   ALTER TABLE Device ADD PRIMARY KEY (device_id);
-   
-   -- Customer table
-   ALTER TABLE Customer ADD PRIMARY KEY (customer_id);
-   
-   -- Sales_Order table
-   ALTER TABLE Sales_Order ADD PRIMARY KEY (order_id);
-   ALTER TABLE Sales_Order ADD CONSTRAINT fk_sales_customer FOREIGN KEY (customer_id) REFERENCES Customer(customer_id);
-   
-   -- Sales_Order_Item table
-   ALTER TABLE Sales_Order_Item ADD PRIMARY KEY (order_item_id);
-   ALTER TABLE Sales_Order_Item ADD CONSTRAINT fk_order_item_order FOREIGN KEY (order_id) REFERENCES Sales_Order(order_id);
-   
-   
-   -- +----------------------------------------------------+
-   -- |       4. COPY DATA INTO TABLE       |
+   -- |       3. COPY DATA INTO TABLE       |
    -- +----------------------------------------------------+
    
    {% for table_name in ['customer', 'device', 'sales_order', 'sales_order_item'] %}
