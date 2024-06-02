@@ -1,3 +1,28 @@
+/*
+------------------------------------------------------------------------------
+-- Snowflake Demo Script: Orders Data Model-- 
+-- Description: 
+-- This script sets up a sales data model in Snowflake. It includes the creation of tables for customers, device,
+-- sales_order, and sales_order_item, along with sample data insertion and tagging of 
+-- columns for PII, lead source, and sales stage. Additionally, it defines RBAC 
+-- privileges, functions, stored procedures, and views for analysis purposes.
+--
+-- Author: Fru N.
+-- Website: DemoHub.dev
+--
+-- Date: June 2, 2024
+--
+-- Copyright: (c) 2024 DemoHub.dev. All rights reserved.
+--
+-- Disclaimer:  
+-- This script is for educational and demonstration purposes only. It is not
+-- affiliated with or endorsed by Snowflake Computing. Use this code at your 
+-- own risk.
+------------------------------------------------------------------------------
+*/
+
+
+
 --!jinja
 
 {% set environments = ['dev', 'qa', 'staging', 'prod'] %}
