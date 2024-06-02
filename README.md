@@ -1,3 +1,3 @@
-# DemoHub-Snowflake
+# Tutorials-DemoHub
 The Snowflake Pocket Book: A Practical Guide to Building and Managing Your Data Cloud
 Embark on an in-depth journey into the world of Snowflake, the cloud-based data platform revolutionizing how businesses manage and leverage their data. This comprehensive guide will equip you with the knowledge and tools to harness Snowflake's full potential, from its intuitive user interface to advanced data science and artificial intelligence capabilities. Whether you're a data professional or business leader, this book will empower you to make data-driven decisions, drive innovation, and gain a competitive edge.
