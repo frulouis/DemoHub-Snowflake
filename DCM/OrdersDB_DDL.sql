@@ -17,7 +17,7 @@
 -- Disclaimer:  
 -- This script is for educational and demonstration purposes only. It is not
 -- affiliated with or endorsed by Snowflake Computing. Use this code at your 
--- own risk.
+-- own risk. Updated. 
 ------------------------------------------------------------------------------
 */
 
